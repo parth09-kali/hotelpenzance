@@ -1,0 +1,2122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hotel Penzance — Sea View Hotel in Cornwall</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Josefin+Sans:wght@200;300;400;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #1a2744;
+  --deep-navy: #0d1a35;
+  --gold: #c9a96e;
+  --gold-light: #e8d5b0;
+  --gold-dark: #a07840;
+  --cream: #f5f0e8;
+  --white: #fdfcf9;
+  --teal: #2a7a8a;
+  --teal-light: #4da0b0;
+  --slate: #5a6a7e;
+  --text-dark: #1a1a2e;
+  --text-mid: #3d4d6e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background: var(--white);
+  color: var(--text-dark);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  width: 12px; height: 12px;
+  background: var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.1s ease, width 0.3s ease, height 0.3s ease, background 0.3s ease;
+  mix-blend-mode: multiply;
+}
+.cursor-ring {
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--gold);
+  border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: transform 0.18s ease, width 0.3s ease, height 0.3s ease;
+  opacity: 0.6;
+}
+.cursor.hovered { width: 24px; height: 24px; background: var(--gold-dark); }
+.cursor-ring.hovered { width: 52px; height: 52px; opacity: 0.3; }
+
+/* PAGE SYSTEM */
+.page { display: none; min-height: 100vh; }
+.page.active { display: block; }
+
+/* ===== NAVIGATION ===== */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 48px;
+  transition: all 0.5s ease;
+}
+nav.scrolled {
+  background: rgba(13, 26, 53, 0.97);
+  backdrop-filter: blur(20px);
+  padding: 14px 48px;
+  box-shadow: 0 2px 40px rgba(0,0,0,0.3);
+}
+.nav-logo {
+  display: flex; flex-direction: column; align-items: flex-start; cursor: pointer;
+}
+.nav-logo-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300; letter-spacing: 6px;
+  color: var(--white); text-transform: uppercase;
+}
+.nav-logo-sub {
+  font-size: 9px; letter-spacing: 5px; color: var(--gold);
+  text-transform: uppercase; font-weight: 300; margin-top: 2px;
+}
+.nav-links {
+  display: flex; align-items: center; gap: 36px; list-style: none;
+}
+.nav-links a, .nav-links span {
+  color: rgba(255,255,255,0.85); text-decoration: none;
+  font-size: 10.5px; letter-spacing: 3px; text-transform: uppercase;
+  font-weight: 400; cursor: pointer;
+  transition: color 0.3s; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+  height: 1px; background: var(--gold);
+  transform: scaleX(0); transition: transform 0.3s ease; transform-origin: left;
+}
+.nav-links a:hover::after { transform: scaleX(1); }
+.nav-links a:hover, .nav-links span:hover { color: var(--gold); }
+
+.dropdown { position: relative; }
+.dropdown-menu {
+  display: none; position: absolute; top: 30px; left: -20px;
+  background: var(--deep-navy); min-width: 260px;
+  padding: 16px 0; border-top: 2px solid var(--gold);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+}
+.dropdown:hover .dropdown-menu { display: block; }
+.dropdown-menu a {
+  display: block; padding: 10px 24px;
+  font-size: 10px; letter-spacing: 2.5px; color: rgba(255,255,255,0.7) !important;
+  transition: all 0.2s;
+}
+.dropdown-menu a:hover { color: var(--gold) !important; padding-left: 32px; }
+.dropdown-menu a::after { display: none !important; }
+
+.nav-book {
+  background: var(--gold); color: var(--deep-navy) !important;
+  padding: 12px 28px !important; font-weight: 600 !important;
+  letter-spacing: 2px !important; transition: all 0.3s !important;
+  border: none; white-space: nowrap;
+}
+.nav-book:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+.nav-book::after { display: none !important; }
+
+/* HAMBURGER */
+.hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.hamburger span { width: 26px; height: 1.5px; background: white; transition: all 0.3s; }
+
+/* ===== HERO ===== */
+.hero {
+  height: 100vh; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(160deg, var(--deep-navy) 0%, var(--navy) 40%, var(--teal) 80%, #1a4a5a 100%);
+  z-index: 0;
+}
+.hero-overlay {
+  position: absolute; inset: 0; z-index: 1;
+  background: radial-gradient(ellipse at 70% 40%, rgba(201,169,110,0.08) 0%, transparent 60%),
+              radial-gradient(ellipse at 20% 80%, rgba(42,122,138,0.15) 0%, transparent 50%);
+}
+.hero-img {
+  position: absolute; inset: 0; z-index: 0;
+  background: url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/391/wyzkl4zgrp.webp') center/cover no-repeat;
+  opacity: 0.35;
+}
+.hero-pattern {
+  position: absolute; inset: 0; z-index: 2; pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 79px, rgba(201,169,110,0.04) 80px),
+                    repeating-linear-gradient(90deg, transparent, transparent 79px, rgba(201,169,110,0.04) 80px);
+}
+.hero-content {
+  position: relative; z-index: 3; text-align: center;
+  padding: 0 24px; max-width: 900px;
+  animation: heroReveal 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes heroReveal {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.hero-eyebrow {
+  font-size: 10px; letter-spacing: 7px; color: var(--gold);
+  text-transform: uppercase; font-weight: 300; margin-bottom: 24px;
+  display: flex; align-items: center; justify-content: center; gap: 16px;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; width: 50px; height: 1px; background: var(--gold); opacity: 0.6;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(56px, 8vw, 110px);
+  font-weight: 300; color: var(--white);
+  line-height: 0.95; letter-spacing: 2px; margin-bottom: 12px;
+}
+.hero-title em { font-style: italic; color: var(--gold); }
+.hero-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(18px, 2.5vw, 26px); font-weight: 300; color: rgba(255,255,255,0.7);
+  letter-spacing: 4px; margin-bottom: 48px; font-style: italic;
+}
+.hero-actions { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  background: var(--gold); color: var(--deep-navy);
+  padding: 16px 44px; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 600; cursor: pointer;
+  border: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: 'Josefin Sans', sans-serif; display: inline-block; text-decoration: none;
+}
+.btn-primary:hover { background: var(--gold-light); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(201,169,110,0.4); }
+.btn-outline {
+  background: transparent; color: var(--white);
+  padding: 15px 44px; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; font-weight: 400; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.4); transition: all 0.4s;
+  font-family: 'Josefin Sans', sans-serif; display: inline-block; text-decoration: none;
+}
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-3px); }
+
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  z-index: 3; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: bounce 2s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(8px); } }
+.hero-scroll span { font-size: 8px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; }
+.hero-scroll-line { width: 1px; height: 48px; background: linear-gradient(to bottom, var(--gold), transparent); }
+.hero-badges {
+  position: absolute; bottom: 44px; right: 52px; z-index: 3;
+  display: flex; flex-direction: column; gap: 12px; align-items: flex-end;
+}
+.hero-badge {
+  background: rgba(13,26,53,0.8); border: 1px solid rgba(201,169,110,0.3);
+  padding: 10px 18px; backdrop-filter: blur(10px);
+}
+.hero-badge-num {
+  font-family: 'Cormorant Garamond', serif; font-size: 28px; color: var(--gold);
+  line-height: 1; font-weight: 300;
+}
+.hero-badge-label { font-size: 8px; letter-spacing: 2px; color: rgba(255,255,255,0.6); text-transform: uppercase; }
+
+/* ===== MARQUEE STRIP ===== */
+.marquee-strip {
+  background: var(--gold); padding: 14px 0; overflow: hidden;
+  position: relative; z-index: 10;
+}
+.marquee-inner {
+  display: flex; gap: 0; white-space: nowrap;
+  animation: marquee 25s linear infinite;
+}
+.marquee-inner span {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--deep-navy); font-weight: 600; padding: 0 32px;
+}
+.marquee-inner .dot { color: var(--deep-navy); opacity: 0.5; }
+@keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ===== SECTIONS ===== */
+.section { padding: 120px 0; }
+.section-alt { background: var(--cream); }
+.section-dark { background: var(--deep-navy); color: var(--white); }
+.container { max-width: 1320px; margin: 0 auto; padding: 0 48px; }
+.section-header { text-align: center; margin-bottom: 72px; }
+.section-eyebrow {
+  font-size: 9px; letter-spacing: 5px; color: var(--gold);
+  text-transform: uppercase; font-weight: 300; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.section-eyebrow::before, .section-eyebrow::after {
+  content: ''; width: 36px; height: 1px; background: var(--gold); opacity: 0.6;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 60px); font-weight: 300;
+  line-height: 1.1; letter-spacing: 1px;
+}
+.section-title em { font-style: italic; color: var(--gold); }
+.section-dark .section-title { color: var(--white); }
+.section-desc {
+  font-size: 14px; line-height: 2; color: var(--slate);
+  max-width: 560px; margin: 20px auto 0; font-weight: 300; letter-spacing: 0.5px;
+}
+.section-dark .section-desc { color: rgba(255,255,255,0.6); }
+
+/* ===== HOTELS GRID ===== */
+.hotels-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+.hotel-card {
+  position: relative; overflow: hidden;
+  height: 560px; cursor: pointer;
+}
+.hotel-card-img {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.hotel-card:hover .hotel-card-img { transform: scale(1.06); }
+.hotel-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,26,53,0.92) 0%, rgba(13,26,53,0.3) 50%, transparent 100%);
+  transition: background 0.5s;
+}
+.hotel-card:hover .hotel-card-overlay {
+  background: linear-gradient(to top, rgba(13,26,53,0.97) 0%, rgba(13,26,53,0.5) 60%, rgba(13,26,53,0.1) 100%);
+}
+.hotel-card-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 48px 44px; transition: transform 0.5s ease;
+}
+.hotel-card:hover .hotel-card-content { transform: translateY(-10px); }
+.hotel-card-tag {
+  font-size: 9px; letter-spacing: 4px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 12px; font-weight: 300;
+}
+.hotel-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 300; color: var(--white);
+  letter-spacing: 1px; margin-bottom: 10px; line-height: 1.2;
+}
+.hotel-card-sub {
+  font-size: 11px; letter-spacing: 2px; color: var(--gold-light);
+  text-transform: uppercase; margin-bottom: 24px; font-weight: 300;
+}
+.hotel-card-btn {
+  display: inline-flex; align-items: center; gap: 12px;
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); font-weight: 400; cursor: pointer;
+  opacity: 0; transform: translateY(10px);
+  transition: all 0.4s ease;
+}
+.hotel-card:hover .hotel-card-btn { opacity: 1; transform: translateY(0); }
+.hotel-card-btn::after { content: '→'; font-size: 16px; }
+
+/* ===== FEATURES ===== */
+.features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 48px; }
+.feature-item { text-align: center; }
+.feature-icon {
+  width: 64px; height: 64px; margin: 0 auto 24px;
+  border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center;
+  font-size: 26px; transition: all 0.4s;
+  color: var(--gold);
+}
+.feature-item:hover .feature-icon {
+  background: var(--gold); color: var(--deep-navy); transform: rotate(10deg) scale(1.1);
+}
+.feature-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px; font-weight: 400; margin-bottom: 10px; color: var(--white);
+}
+.feature-desc { font-size: 12px; line-height: 1.9; color: rgba(255,255,255,0.5); letter-spacing: 0.5px; }
+
+/* ===== RESTAURANTS ===== */
+.restaurants-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; margin-bottom: 48px; }
+.restaurant-card {
+  position: relative; overflow: hidden;
+  background: var(--deep-navy); cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+.restaurant-card:hover { transform: translateY(-6px); box-shadow: 0 30px 80px rgba(13,26,53,0.4); }
+.restaurant-card-img {
+  height: 280px; background-size: cover; background-position: center;
+  transition: transform 0.7s ease;
+}
+.restaurant-card:hover .restaurant-card-img { transform: scale(1.05); }
+.restaurant-card-body { padding: 32px 36px 36px; }
+.restaurant-card-tag {
+  font-size: 8.5px; letter-spacing: 4px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 10px;
+}
+.restaurant-card-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300; color: var(--white);
+  margin-bottom: 12px; line-height: 1.2;
+}
+.restaurant-card-desc { font-size: 12px; line-height: 1.9; color: rgba(255,255,255,0.55); margin-bottom: 24px; }
+.restaurant-card-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 18px; border-top: 1px solid rgba(201,169,110,0.15);
+}
+.restaurant-card-info { font-size: 10px; letter-spacing: 2px; color: var(--gold-light); }
+.restaurant-card-link {
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); cursor: pointer; transition: letter-spacing 0.3s;
+}
+.restaurant-card-link:hover { letter-spacing: 4px; }
+
+/* ===== GALLERY ===== */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(2, 280px);
+  gap: 4px;
+}
+.gallery-item {
+  overflow: hidden; cursor: pointer; position: relative;
+}
+.gallery-item:first-child { grid-column: span 2; grid-row: span 2; }
+.gallery-item-img {
+  width: 100%; height: 100%; object-fit: cover;
+  background-size: cover; background-position: center;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.gallery-item:hover .gallery-item-img { transform: scale(1.08); }
+.gallery-item-overlay {
+  position: absolute; inset: 0; background: rgba(13,26,53,0);
+  transition: background 0.4s; display: flex; align-items: center; justify-content: center;
+}
+.gallery-item:hover .gallery-item-overlay { background: rgba(13,26,53,0.4); }
+.gallery-item-label {
+  font-size: 10px; letter-spacing: 4px; color: white; text-transform: uppercase;
+  opacity: 0; transform: translateY(10px); transition: all 0.4s 0.1s;
+}
+.gallery-item:hover .gallery-item-label { opacity: 1; transform: translateY(0); }
+
+/* ===== OFFER STRIP ===== */
+.offer-section {
+  background: linear-gradient(135deg, var(--navy) 0%, var(--deep-navy) 50%, var(--teal) 100%);
+  padding: 80px 0; position: relative; overflow: hidden;
+}
+.offer-section::before {
+  content: ''; position: absolute; top: -50%; right: -10%;
+  width: 600px; height: 600px;
+  border: 1px solid rgba(201,169,110,0.1);
+  border-radius: 50%;
+}
+.offer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
+.offer-content .section-title { color: var(--white); text-align: left; }
+.offer-content .section-eyebrow { justify-content: flex-start; }
+.offer-content .section-eyebrow::before { display: none; }
+.offer-list { list-style: none; margin: 32px 0; display: flex; flex-direction: column; gap: 14px; }
+.offer-list li {
+  display: flex; align-items: center; gap: 14px;
+  font-size: 12px; letter-spacing: 1.5px; color: rgba(255,255,255,0.7);
+}
+.offer-list li::before {
+  content: '◆'; color: var(--gold); font-size: 8px; flex-shrink: 0;
+}
+.offer-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(201,169,110,0.2);
+  padding: 52px 48px; backdrop-filter: blur(10px); text-align: center;
+}
+.offer-price {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 72px; font-weight: 300; color: var(--gold); line-height: 1;
+}
+.offer-price-label { font-size: 10px; letter-spacing: 3px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-bottom: 28px; }
+.offer-seasons { display: flex; justify-content: center; gap: 32px; margin-top: 32px; padding-top: 24px; border-top: 1px solid rgba(201,169,110,0.2); }
+.offer-season-item { text-align: center; }
+.offer-season-price { font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--white); }
+.offer-season-label { font-size: 9px; letter-spacing: 2px; color: var(--gold); text-transform: uppercase; }
+
+/* ===== TESTIMONIALS ===== */
+.testimonials-wrap { max-width: 800px; margin: 0 auto; }
+.testimonial-card { text-align: center; padding: 48px; position: relative; }
+.testimonial-quote {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 26px; font-weight: 300; line-height: 1.7;
+  color: var(--text-dark); font-style: italic; margin-bottom: 32px;
+}
+.testimonial-quote::before {
+  content: '\201C'; display: block;
+  font-size: 80px; line-height: 0.5; color: var(--gold);
+  margin-bottom: 24px; font-style: normal;
+}
+.testimonial-author { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--slate); }
+.testimonial-stars { color: var(--gold); font-size: 14px; margin-bottom: 10px; letter-spacing: 4px; }
+.testimonial-nav { display: flex; justify-content: center; gap: 10px; margin-top: 36px; }
+.testimonial-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--gold-light); cursor: pointer; transition: all 0.3s;
+}
+.testimonial-dot.active { background: var(--gold); transform: scale(1.4); }
+
+/* ===== EXPLORE ===== */
+.explore-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.explore-card {
+  position: relative; overflow: hidden; cursor: pointer;
+  height: 380px;
+}
+.explore-card-img {
+  position: absolute; inset: 0; background-size: cover; background-position: center;
+  transition: transform 0.8s ease;
+}
+.explore-card:hover .explore-card-img { transform: scale(1.08); }
+.explore-card-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(13,26,53,0.9) 0%, rgba(13,26,53,0.2) 60%, transparent 100%);
+}
+.explore-card-content {
+  position: absolute; bottom: 0; padding: 36px;
+}
+.explore-card-tag { font-size: 9px; letter-spacing: 3px; color: var(--gold); text-transform: uppercase; margin-bottom: 8px; }
+.explore-card-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 24px; font-weight: 300; color: var(--white); line-height: 1.3;
+}
+
+/* ===== NEWSLETTER ===== */
+.newsletter {
+  background: var(--gold); padding: 72px 0; text-align: center;
+}
+.newsletter-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 42px; font-weight: 300; color: var(--deep-navy); margin-bottom: 8px;
+}
+.newsletter-sub { font-size: 11px; letter-spacing: 3px; color: var(--navy); opacity: 0.7; text-transform: uppercase; margin-bottom: 36px; }
+.newsletter-form { display: flex; gap: 0; max-width: 480px; margin: 0 auto; }
+.newsletter-input {
+  flex: 1; padding: 16px 24px; border: none; border-bottom: 2px solid var(--deep-navy);
+  background: transparent; font-family: 'Josefin Sans', sans-serif;
+  font-size: 12px; letter-spacing: 2px; color: var(--deep-navy);
+  outline: none;
+}
+.newsletter-input::placeholder { color: rgba(13,26,53,0.5); }
+.newsletter-submit {
+  background: var(--deep-navy); color: var(--gold);
+  padding: 16px 32px; border: none; cursor: pointer;
+  font-family: 'Josefin Sans', sans-serif;
+  font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+  transition: background 0.3s;
+}
+.newsletter-submit:hover { background: var(--navy); }
+
+/* ===== FOOTER ===== */
+footer {
+  background: var(--deep-navy); padding: 80px 0 36px;
+  border-top: 1px solid rgba(201,169,110,0.15);
+}
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; }
+.footer-logo-main {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 28px; font-weight: 300; letter-spacing: 4px;
+  color: var(--white); text-transform: uppercase; margin-bottom: 6px;
+}
+.footer-logo-sub { font-size: 9px; letter-spacing: 5px; color: var(--gold); text-transform: uppercase; margin-bottom: 20px; }
+.footer-tagline { font-size: 12px; line-height: 1.9; color: rgba(255,255,255,0.4); max-width: 240px; margin-bottom: 28px; }
+.footer-social { display: flex; gap: 14px; }
+.footer-social a {
+  width: 36px; height: 36px; border: 1px solid rgba(201,169,110,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; color: var(--gold-light); text-decoration: none;
+  transition: all 0.3s;
+}
+.footer-social a:hover { background: var(--gold); color: var(--deep-navy); border-color: var(--gold); }
+.footer-col-title {
+  font-size: 10px; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 22px; font-weight: 600;
+}
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+.footer-links a, .footer-links span {
+  font-size: 12px; color: rgba(255,255,255,0.45); text-decoration: none;
+  letter-spacing: 1px; cursor: pointer; transition: color 0.2s;
+}
+.footer-links a:hover, .footer-links span:hover { color: var(--gold); }
+.footer-contact-item { display: flex; gap: 10px; margin-bottom: 12px; font-size: 12px; color: rgba(255,255,255,0.45); }
+.footer-contact-item .icon { color: var(--gold); font-size: 14px; }
+.footer-divider { height: 1px; background: rgba(201,169,110,0.1); margin-bottom: 28px; }
+.footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+.footer-copy { font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.3); }
+.footer-legal { display: flex; gap: 24px; }
+.footer-legal a { font-size: 10px; letter-spacing: 1.5px; color: rgba(255,255,255,0.3); text-decoration: none; }
+.footer-legal a:hover { color: var(--gold); }
+
+/* ===== RESTAURANT PAGES ===== */
+.restaurant-hero {
+  height: 65vh; position: relative; display: flex; align-items: center; justify-content: center;
+}
+.restaurant-hero-bg {
+  position: absolute; inset: 0; background-size: cover; background-position: center;
+}
+.restaurant-hero-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to bottom, rgba(13,26,53,0.5) 0%, rgba(13,26,53,0.7) 100%);
+}
+.restaurant-hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; }
+.restaurant-hero-tag {
+  font-size: 9px; letter-spacing: 5px; color: var(--gold);
+  text-transform: uppercase; margin-bottom: 18px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+}
+.restaurant-hero-tag::before, .restaurant-hero-tag::after {
+  content: ''; width: 40px; height: 1px; background: var(--gold); opacity: 0.7;
+}
+.restaurant-hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(44px, 7vw, 88px); font-weight: 300;
+  color: var(--white); letter-spacing: 2px; line-height: 1;
+}
+.restaurant-hero-title em { font-style: italic; color: var(--gold); }
+
+/* MENU */
+.menu-section { padding: 100px 0; }
+.menu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+.menu-category-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px; font-weight: 300; color: var(--navy);
+  margin-bottom: 36px; padding-bottom: 16px;
+  border-bottom: 1px solid var(--gold-light); letter-spacing: 1px;
+}
+.menu-item { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid rgba(201,169,110,0.15); }
+.menu-item:last-child { border-bottom: none; }
+.menu-item-info { flex: 1; }
+.menu-item-name { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-weight: 400; color: var(--text-dark); margin-bottom: 5px; }
+.menu-item-desc { font-size: 11px; letter-spacing: 0.5px; line-height: 1.8; color: var(--slate); }
+.menu-item-price { font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--gold-dark); font-weight: 500; margin-left: 24px; white-space: nowrap; }
+.menu-note { font-size: 10px; letter-spacing: 2px; color: var(--slate); text-align: center; padding: 24px; background: var(--cream); margin-top: 48px; }
+
+/* DINING FEATURES */
+.dining-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-bottom: 80px; }
+.dining-feature {
+  background: var(--cream); padding: 40px 36px; text-align: center;
+  border-bottom: 3px solid var(--gold);
+}
+.dining-feature-icon { font-size: 32px; margin-bottom: 16px; }
+.dining-feature-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px; color: var(--navy); margin-bottom: 10px;
+}
+.dining-feature-desc { font-size: 12px; line-height: 1.9; color: var(--slate); }
+
+/* BACK NAV */
+.back-nav {
+  background: var(--cream); padding: 16px 48px;
+  display: flex; align-items: center; gap: 16px;
+  border-bottom: 1px solid var(--gold-light);
+  position: sticky; top: 72px; z-index: 100;
+}
+.back-nav a {
+  font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--slate); text-decoration: none; cursor: pointer;
+  transition: color 0.2s;
+}
+.back-nav a:hover { color: var(--gold-dark); }
+.back-nav .sep { color: var(--gold); }
+
+/* TABS */
+.restaurant-tabs { display: flex; gap: 0; border-bottom: 1px solid var(--gold-light); margin-bottom: 64px; }
+.restaurant-tab {
+  padding: 18px 36px; font-size: 10px; letter-spacing: 3px;
+  text-transform: uppercase; cursor: pointer; color: var(--slate);
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.3s;
+}
+.restaurant-tab.active, .restaurant-tab:hover { color: var(--navy); border-bottom-color: var(--gold); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* SCROLL ANIMATIONS */
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+.fade-up.visible { opacity: 1; transform: translateY(0); }
+.fade-up.delay-1 { transition-delay: 0.15s; }
+.fade-up.delay-2 { transition-delay: 0.3s; }
+.fade-up.delay-3 { transition-delay: 0.45s; }
+
+/* LOADING SCREEN */
+.loading-screen {
+  position: fixed; inset: 0; background: var(--deep-navy);
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 24px; z-index: 10000;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+.loading-screen.done { opacity: 0; visibility: hidden; }
+.loading-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 48px; font-weight: 300; color: var(--white); letter-spacing: 8px;
+  text-transform: uppercase; text-align: center;
+}
+.loading-sub { font-size: 9px; letter-spacing: 6px; color: var(--gold); text-transform: uppercase; }
+.loading-bar { width: 200px; height: 1px; background: rgba(255,255,255,0.1); margin-top: 8px; }
+.loading-bar-fill { height: 100%; background: var(--gold); width: 0%; transition: width 1.2s ease; }
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .hotels-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+  .gallery-item:first-child { grid-column: span 2; grid-row: span 1; }
+}
+@media (max-width: 768px) {
+  nav { padding: 18px 24px; }
+  nav.scrolled { padding: 12px 24px; }
+  .nav-links, .nav-book { display: none; }
+  .hamburger { display: flex; }
+  .container { padding: 0 24px; }
+  .section { padding: 72px 0; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .restaurants-grid { grid-template-columns: 1fr; }
+  .dining-features { grid-template-columns: 1fr; }
+  .menu-grid { grid-template-columns: 1fr; gap: 48px; }
+  .offer-grid { grid-template-columns: 1fr; }
+  .explore-grid { grid-template-columns: 1fr 1fr; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .hero-badges { display: none; }
+  .newsletter-form { flex-direction: column; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  body { cursor: auto; }
+  .cursor, .cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- CUSTOM CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- LOADING SCREEN -->
+<div class="loading-screen" id="loadingScreen">
+  <div class="loading-logo">Hotel Penzance</div>
+  <div class="loading-sub">Cornwall · England</div>
+  <div class="loading-bar"><div class="loading-bar-fill" id="loadingBar"></div></div>
+</div>
+
+<!-- NAVIGATION -->
+<nav id="navbar">
+  <div class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-main">Hotel Penzance</div>
+    <div class="nav-logo-sub">Cornwall · England</div>
+  </div>
+  <ul class="nav-links">
+    <li class="dropdown">
+      <span>Accommodation ▾</span>
+      <div class="dropdown-menu">
+        <a onclick="showPage('home')">Hotel Penzance Harbour View</a>
+        <a onclick="showPage('home')">Hotel Penzance Promenade</a>
+        <a onclick="showPage('home')">Beach Houses, Marazion</a>
+        <a onclick="showPage('home')">Compare Rooms & Rates</a>
+      </div>
+    </li>
+    <li class="dropdown">
+      <span>Restaurants ▾</span>
+      <div class="dropdown-menu">
+        <a onclick="showPage('garden-restaurant')">The Garden Restaurant</a>
+        <a onclick="showPage('beach-kitchen')">The Beach Kitchen</a>
+        <a onclick="showPage('surf-club')">The Surf Club</a>
+        <a onclick="showPage('ministry-flavour')">Ministry of Flavour</a>
+      </div>
+    </li>
+    <li><a onclick="showPage('home')">Gallery</a></li>
+    <li><a onclick="showPage('home')">Explore</a></li>
+    <li><a onclick="showPage('home')">About</a></li>
+    <li><a onclick="showPage('home')">Contact</a></li>
+    <li><a class="nav-book" onclick="showPage('home')">Book Now</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ================= HOME PAGE ================= -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-img"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Boutique Sea View Hotels · Cornwall</div>
+      <h1 class="hero-title">Hotel <em>Penzance</em></h1>
+      <p class="hero-subtitle">Where the Atlantic meets timeless elegance</p>
+      <div class="hero-actions">
+        <button class="btn-primary" onclick="showPage('home')">Explore Rooms</button>
+        <button class="btn-outline" onclick="showPage('garden-restaurant')">Dine With Us</button>
+      </div>
+    </div>
+    <div class="hero-badges">
+      <div class="hero-badge">
+        <div class="hero-badge-num">4</div>
+        <div class="hero-badge-label">Restaurants</div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-num">140</div>
+        <div class="hero-badge-label">Years of Hospitality</div>
+      </div>
+    </div>
+    <div class="hero-scroll" onclick="document.getElementById('marquee').scrollIntoView({behavior:'smooth'})">
+      <div class="hero-scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip" id="marquee">
+    <div class="marquee-inner">
+      <span>Harbour Views</span><span class="dot">◆</span>
+      <span>Cornish Cuisine</span><span class="dot">◆</span>
+      <span>Atlantic Coast</span><span class="dot">◆</span>
+      <span>Boutique Luxury</span><span class="dot">◆</span>
+      <span>Sea Breeze</span><span class="dot">◆</span>
+      <span>St Michael's Mount</span><span class="dot">◆</span>
+      <span>Timeless Elegance</span><span class="dot">◆</span>
+      <span>Harbour Views</span><span class="dot">◆</span>
+      <span>Cornish Cuisine</span><span class="dot">◆</span>
+      <span>Atlantic Coast</span><span class="dot">◆</span>
+      <span>Boutique Luxury</span><span class="dot">◆</span>
+      <span>Sea Breeze</span><span class="dot">◆</span>
+      <span>St Michael's Mount</span><span class="dot">◆</span>
+      <span>Timeless Elegance</span><span class="dot">◆</span>
+    </div>
+  </div>
+
+  <!-- HOTELS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-eyebrow">Our Properties</div>
+        <h2 class="section-title">Two Outstanding Sea View<br><em>Hotels in Cornwall</em></h2>
+        <p class="section-desc">Boutique hotel accommodation at its finest — where timeless charm meets unforgettable sea views</p>
+      </div>
+    </div>
+    <div class="hotels-grid fade-up">
+      <div class="hotel-card" onclick="showPage('home')">
+        <div class="hotel-card-img" style="background-image: url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/391/wyzkl4zgrp.webp')"></div>
+        <div class="hotel-card-overlay"></div>
+        <div class="hotel-card-content">
+          <div class="hotel-card-tag">Harbour View</div>
+          <div class="hotel-card-title">Hotel Penzance<br>Harbour View</div>
+          <div class="hotel-card-sub">Stunning Elevated Harbour & Sea Views</div>
+          <div class="hotel-card-btn">Explore Hotel</div>
+        </div>
+      </div>
+      <div class="hotel-card" onclick="showPage('home')">
+        <div class="hotel-card-img" style="background-image: url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/353/q1weohtnnx.webp')"></div>
+        <div class="hotel-card-overlay"></div>
+        <div class="hotel-card-content">
+          <div class="hotel-card-tag">Promenade</div>
+          <div class="hotel-card-title">Hotel Penzance<br>Promenade</div>
+          <div class="hotel-card-sub">The Beach at Your Doorstep & Soaring Sea Views</div>
+          <div class="hotel-card-btn">Explore Hotel</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-eyebrow">The Penzance Experience</div>
+        <h2 class="section-title" style="color:var(--white)">What Sets Us <em>Apart</em></h2>
+      </div>
+      <div class="features-grid">
+        <div class="feature-item fade-up">
+          <div class="feature-icon">🌊</div>
+          <div class="feature-title">Panoramic Sea Views</div>
+          <div class="feature-desc">Wake up to breathtaking vistas of Mount's Bay, from the Lizard Peninsula across to St Michael's Mount.</div>
+        </div>
+        <div class="feature-item fade-up delay-1">
+          <div class="feature-icon">🍽️</div>
+          <div class="feature-title">Four Restaurants</div>
+          <div class="feature-desc">From just-landed seafood to the finest curries in Cornwall — dining is an experience to savour.</div>
+        </div>
+        <div class="feature-item fade-up delay-2">
+          <div class="feature-icon">🏛️</div>
+          <div class="feature-title">Heritage & Character</div>
+          <div class="feature-desc">140 years of hosting, from Edwardian townhouse to Art Deco promenade — every corner tells a story.</div>
+        </div>
+        <div class="feature-item fade-up delay-3">
+          <div class="feature-icon">🌿</div>
+          <div class="feature-title">Cornish Soul</div>
+          <div class="feature-desc">Authentic coastal character, heartfelt hospitality, and exceptional value — where Cornwall comes to life.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESTAURANTS -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-eyebrow">Culinary Experiences</div>
+        <h2 class="section-title">Four Fabulous<br><em>Restaurants</em></h2>
+        <p class="section-desc">Every plate is crafted to delight. From ocean views to comforting spice — it's not just dining, it's a moment to savour.</p>
+      </div>
+      <div class="restaurants-grid fade-up" style="background:var(--deep-navy); border-radius:0">
+        <div class="restaurant-card" onclick="showPage('garden-restaurant')">
+          <div class="restaurant-card-img" style="background-image:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/336/ovxoclvds4.webp')"></div>
+          <div class="restaurant-card-body">
+            <div class="restaurant-card-tag">Hotel Penzance Harbour View</div>
+            <div class="restaurant-card-name">The Garden Restaurant</div>
+            <div class="restaurant-card-desc">An intimate and beautifully appointed dining room serving the finest locally sourced Cornish produce, with harbour views to match the exceptional cuisine.</div>
+            <div class="restaurant-card-footer">
+              <div class="restaurant-card-info">Breakfast · Dinner · Sunday Roast</div>
+              <div class="restaurant-card-link" onclick="event.stopPropagation();showPage('garden-restaurant')">View Menu →</div>
+            </div>
+          </div>
+        </div>
+        <div class="restaurant-card" onclick="showPage('beach-kitchen')">
+          <div class="restaurant-card-img" style="background-image:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/353/q1weohtnnx.webp')"></div>
+          <div class="restaurant-card-body">
+            <div class="restaurant-card-tag">Hotel Penzance Promenade</div>
+            <div class="restaurant-card-name">The Beach Kitchen</div>
+            <div class="restaurant-card-desc">Casual coastal dining at its finest. Fresh seafood, vibrant salads, and classics served with soaring views over Mount's Bay and the beach promenade.</div>
+            <div class="restaurant-card-footer">
+              <div class="restaurant-card-info">All Day Dining · Cocktails</div>
+              <div class="restaurant-card-link" onclick="event.stopPropagation();showPage('beach-kitchen')">View Menu →</div>
+            </div>
+          </div>
+        </div>
+        <div class="restaurant-card" onclick="showPage('surf-club')">
+          <div class="restaurant-card-img" style="background-image:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/323/1exlg7ron6.webp')"></div>
+          <div class="restaurant-card-body">
+            <div class="restaurant-card-tag">Marazion</div>
+            <div class="restaurant-card-name">The Surf Club Restaurant</div>
+            <div class="restaurant-card-desc">Perched above Marazion Beach with unrivalled views of St Michael's Mount. Fresh fish, wood-fired pizzas, and the best sundowners on the Cornish coast.</div>
+            <div class="restaurant-card-footer">
+              <div class="restaurant-card-info">Lunch · Dinner · Bar</div>
+              <div class="restaurant-card-link" onclick="event.stopPropagation();showPage('surf-club')">View Menu →</div>
+            </div>
+          </div>
+        </div>
+        <div class="restaurant-card" onclick="showPage('ministry-flavour')">
+          <div class="restaurant-card-img" style="background-image:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/149/jmlgxewjku.webp')"></div>
+          <div class="restaurant-card-body">
+            <div class="restaurant-card-tag">Penzance Town</div>
+            <div class="restaurant-card-name">Ministry of Flavour</div>
+            <div class="restaurant-card-desc">The best curry in Penzance — vibrant Indian cuisine bursting with authentic spice, warmth, and bold flavour. A sensory celebration in the heart of town.</div>
+            <div class="restaurant-card-footer">
+              <div class="restaurant-card-info">Dinner · Takeaway Available</div>
+              <div class="restaurant-card-link" onclick="event.stopPropagation();showPage('ministry-flavour')">View Menu →</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-eyebrow">Gallery</div>
+        <h2 class="section-title">A Glimpse of <em>Cornwall</em></h2>
+      </div>
+    </div>
+    <div class="gallery-grid fade-up" style="max-width:1320px;margin:0 auto;padding:0 48px;">
+      <div class="gallery-item">
+        <div class="gallery-item-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/391/wyzkl4zgrp.webp') center/cover no-repeat;height:100%"></div>
+        <div class="gallery-item-overlay"><div class="gallery-item-label">Harbour View</div></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/353/q1weohtnnx.webp') center/cover no-repeat;height:280px"></div>
+        <div class="gallery-item-overlay"><div class="gallery-item-label">Promenade</div></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/323/1exlg7ron6.webp') center/cover no-repeat;height:280px"></div>
+        <div class="gallery-item-overlay"><div class="gallery-item-label">Surf Club</div></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/336/ovxoclvds4.webp') center/cover no-repeat;height:280px"></div>
+        <div class="gallery-item-overlay"><div class="gallery-item-label">The Lounge</div></div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-item-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/316/lwz5mrhpr8.webp') center/cover no-repeat;height:280px"></div>
+        <div class="gallery-item-overlay"><div class="gallery-item-label">Beach House</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OFFERS -->
+  <section class="offer-section">
+    <div class="container">
+      <div class="offer-grid">
+        <div class="offer-content fade-up">
+          <div class="section-eyebrow">Early Bird 2026</div>
+          <h2 class="section-title" style="color:white;text-align:left">Exclusive<br><em>Seasonal Offers</em></h2>
+          <ul class="offer-list">
+            <li>Daily complimentary breakfast or dinner for two</li>
+            <li>Champagne on arrival for three-night stays</li>
+            <li>Late checkout on Sundays</li>
+            <li>Free parking throughout your stay</li>
+            <li>Access to all hotel facilities & lounges</li>
+          </ul>
+          <button class="btn-primary">View All Offers</button>
+        </div>
+        <div class="offer-card fade-up delay-2">
+          <div class="offer-price-label" style="margin-bottom:8px">The Mews — Budget Coastal</div>
+          <div class="offer-price">£89</div>
+          <div class="offer-price-label">per night in Spring</div>
+          <div class="offer-seasons">
+            <div class="offer-season-item">
+              <div class="offer-season-price">£89</div>
+              <div class="offer-season-label">Spring</div>
+            </div>
+            <div class="offer-season-item">
+              <div class="offer-season-price">£139</div>
+              <div class="offer-season-label">Peak Summer</div>
+            </div>
+          </div>
+          <div style="margin-top:28px;">
+            <button class="btn-primary" style="width:100%">Book The Mews</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-eyebrow">Guest Stories</div>
+        <h2 class="section-title">What Our Guests <em>Say</em></h2>
+      </div>
+      <div class="testimonials-wrap fade-up">
+        <div id="testimonialCards">
+          <div class="testimonial-card" id="t0">
+            <div class="testimonial-stars">★★★★★</div>
+            <p class="testimonial-quote">The views were simply extraordinary. Waking up to Mount's Bay was a daily gift. The staff went above and beyond — it truly felt like a home away from home.</p>
+            <div class="testimonial-author">— Sarah M. · TripAdvisor</div>
+          </div>
+        </div>
+        <div class="testimonial-nav">
+          <div class="testimonial-dot active" onclick="showTestimonial(0)"></div>
+          <div class="testimonial-dot" onclick="showTestimonial(1)"></div>
+          <div class="testimonial-dot" onclick="showTestimonial(2)"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPLORE -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header fade-up">
+        <div class="section-eyebrow">West Cornwall</div>
+        <h2 class="section-title">Explore the <em>Peninsula</em></h2>
+      </div>
+      <div class="explore-grid fade-up">
+        <div class="explore-card">
+          <div class="explore-card-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/25/ounjoniv1g.webp') center/cover no-repeat"></div>
+          <div class="explore-card-overlay"></div>
+          <div class="explore-card-content">
+            <div class="explore-card-tag">Iconic Landmark</div>
+            <div class="explore-card-title">St Michael's Mount</div>
+          </div>
+        </div>
+        <div class="explore-card">
+          <div class="explore-card-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/149/jmlgxewjku.webp') center/cover no-repeat"></div>
+          <div class="explore-card-overlay"></div>
+          <div class="explore-card-content">
+            <div class="explore-card-tag">Adventure</div>
+            <div class="explore-card-title">Coastal Activities</div>
+          </div>
+        </div>
+        <div class="explore-card">
+          <div class="explore-card-img" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/316/lwz5mrhpr8.webp') center/cover no-repeat"></div>
+          <div class="explore-card-overlay"></div>
+          <div class="explore-card-content">
+            <div class="explore-card-tag">Golden Beach</div>
+            <div class="explore-card-title">Marazion Sands</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <div class="newsletter fade-up">
+    <div class="container">
+      <div class="newsletter-title">Stay in the Story</div>
+      <div class="newsletter-sub">Sign up for exclusive offers & Cornish inspiration</div>
+      <div class="newsletter-form">
+        <input class="newsletter-input" type="email" placeholder="Your email address">
+        <button class="newsletter-submit">Subscribe</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo-main">Hotel Penzance</div>
+          <div class="footer-logo-sub">Cornwall Collection</div>
+          <p class="footer-tagline">Boutique sea view hotels in Penzance and Marazion, delivering exceptional hospitality since 1885.</p>
+          <div class="footer-social">
+            <a href="#">f</a>
+            <a href="#">in</a>
+            <a href="#">★</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Stay</div>
+          <ul class="footer-links">
+            <li><span onclick="showPage('home')">Harbour View Hotel</span></li>
+            <li><span onclick="showPage('home')">Promenade Hotel</span></li>
+            <li><span onclick="showPage('home')">Beach House Marazion</span></li>
+            <li><span onclick="showPage('home')">The Mews</span></li>
+            <li><span onclick="showPage('home')">Compare Rooms</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Restaurants</div>
+          <ul class="footer-links">
+            <li><span onclick="showPage('garden-restaurant')">The Garden Restaurant</span></li>
+            <li><span onclick="showPage('beach-kitchen')">The Beach Kitchen</span></li>
+            <li><span onclick="showPage('surf-club')">The Surf Club</span></li>
+            <li><span onclick="showPage('ministry-flavour')">Ministry of Flavour</span></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Contact</div>
+          <div class="footer-contact-item"><span class="icon">📍</span> Regent Terrace, Penzance, Cornwall TR18 4DW</div>
+          <div class="footer-contact-item"><span class="icon">📞</span> +44 (0)1736 363117</div>
+          <div class="footer-contact-item"><span class="icon">✉</span> reservations@hotelpenzance.com</div>
+        </div>
+      </div>
+      <div class="footer-divider"></div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2026 Hotel Penzance Collection. All rights reserved.</div>
+        <div class="footer-legal">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</div><!-- END HOME PAGE -->
+
+<!-- ================= GARDEN RESTAURANT PAGE ================= -->
+<div class="page" id="page-garden-restaurant">
+  <section class="restaurant-hero">
+    <div class="restaurant-hero-bg" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/336/ovxoclvds4.webp') center/cover no-repeat"></div>
+    <div class="restaurant-hero-overlay"></div>
+    <div class="restaurant-hero-content">
+      <div class="restaurant-hero-tag">Hotel Penzance Harbour View</div>
+      <h1 class="restaurant-hero-title">The Garden<br><em>Restaurant</em></h1>
+      <div style="margin-top:28px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary">Reserve a Table</button>
+        <button class="btn-outline" onclick="document.getElementById('garden-menu').scrollIntoView({behavior:'smooth'})">View Menu</button>
+      </div>
+    </div>
+  </section>
+  <div class="back-nav">
+    <a onclick="showPage('home')">← Home</a>
+    <span class="sep">◆</span>
+    <a>Restaurants</a>
+    <span class="sep">◆</span>
+    <a>The Garden Restaurant</a>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="dining-features fade-up">
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🌿</div>
+          <div class="dining-feature-title">Locally Sourced</div>
+          <div class="dining-feature-desc">Every ingredient sourced from Cornwall's finest farms, fisheries, and market gardens.</div>
+        </div>
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🏡</div>
+          <div class="dining-feature-title">Harbour Views</div>
+          <div class="dining-feature-desc">Dine with stunning views over Penzance Harbour and the sparkling bay beyond.</div>
+        </div>
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🍷</div>
+          <div class="dining-feature-title">Curated Wine List</div>
+          <div class="dining-feature-desc">A thoughtful selection of Old and New World wines, plus local Cornish ales and spirits.</div>
+        </div>
+      </div>
+      <div class="restaurant-tabs" id="garden-menu">
+        <div class="restaurant-tab active" onclick="switchTab('garden','dinner')">Dinner</div>
+        <div class="restaurant-tab" onclick="switchTab('garden','breakfast')">Breakfast</div>
+        <div class="restaurant-tab" onclick="switchTab('garden','sunday')">Sunday Roast</div>
+      </div>
+      <div id="garden-dinner" class="tab-content active">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Starters</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Cornish Crab Bisque</div>
+                <div class="menu-item-desc">Hand-picked Newlyn crab, saffron cream, sourdough crouton</div>
+              </div>
+              <div class="menu-item-price">£12</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Smoked Mackerel Pâté</div>
+                <div class="menu-item-desc">Line-caught mackerel, horseradish crème fraîche, pickled cucumber, rye toast</div>
+              </div>
+              <div class="menu-item-price">£10</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Wild Garlic Soup</div>
+                <div class="menu-item-desc">Cornish wild garlic, potato, cheddar croutons, herb oil</div>
+              </div>
+              <div class="menu-item-price">£9</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Burrata & Heritage Tomatoes</div>
+                <div class="menu-item-desc">Trewithen dairy burrata, Cornish tomatoes, aged balsamic, basil oil</div>
+              </div>
+              <div class="menu-item-price">£13</div>
+            </div>
+            <div class="menu-category-title" style="margin-top:40px">Desserts</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Cornish Clotted Cream Panna Cotta</div>
+                <div class="menu-item-desc">Strawberry compote, shortbread crumble</div>
+              </div>
+              <div class="menu-item-price">£9</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Dark Chocolate Fondant</div>
+                <div class="menu-item-desc">70% Valrhona chocolate, salted caramel ice cream, honeycomb</div>
+              </div>
+              <div class="menu-item-price">£10</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Cornish Cheese Board</div>
+                <div class="menu-item-desc">Selection of local cheeses, quince jelly, oatcakes, celery</div>
+              </div>
+              <div class="menu-item-price">£14</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Main Courses</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Pan-Roasted Sea Bass</div>
+                <div class="menu-item-desc">Line-caught Cornish sea bass, samphire, brown shrimp butter, new potatoes, lemon</div>
+              </div>
+              <div class="menu-item-price">£28</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Rack of Cornish Lamb</div>
+                <div class="menu-item-desc">Herb-crusted rack, dauphinoise potato, roasted root vegetables, redcurrant jus</div>
+              </div>
+              <div class="menu-item-price">£34</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Lobster Thermidor</div>
+                <div class="menu-item-desc">Half Cornish lobster, classic thermidor sauce, hand-cut chips, dressed salad</div>
+              </div>
+              <div class="menu-item-price">£42</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Wild Mushroom Risotto</div>
+                <div class="menu-item-desc">Porcini, chanterelle, truffle oil, aged parmesan, chives (V)</div>
+              </div>
+              <div class="menu-item-price">£22</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Beef Fillet Wellington</div>
+                <div class="menu-item-desc">Cornish prime fillet, mushroom duxelles, prosciutto, puff pastry, red wine jus</div>
+              </div>
+              <div class="menu-item-price">£38</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Pan-Seared Duck Breast</div>
+                <div class="menu-item-desc">Cornish duck, cherry & port reduction, celeriac purée, braised red cabbage</div>
+              </div>
+              <div class="menu-item-price">£30</div>
+            </div>
+          </div>
+        </div>
+        <div class="menu-note">All dishes feature locally sourced Cornish produce. Please inform us of any dietary requirements. Prices include VAT.</div>
+      </div>
+      <div id="garden-breakfast" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Continental</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Fresh Pastry Basket</div>
+                <div class="menu-item-desc">Croissants, pain au chocolat, Danish pastries</div>
+              </div>
+              <div class="menu-item-price">£6</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Granola & Fruit</div>
+                <div class="menu-item-desc">House granola, Cornish yoghurt, seasonal berries, honey</div>
+              </div>
+              <div class="menu-item-price">£8</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Smoked Salmon Bagel</div>
+                <div class="menu-item-desc">Cornish smoked salmon, cream cheese, capers, red onion</div>
+              </div>
+              <div class="menu-item-price">£14</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Cooked Breakfasts</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">The Full Cornish</div>
+                <div class="menu-item-desc">Streaky bacon, sausages, eggs (any style), black pudding, grilled tomato, mushrooms, toast</div>
+              </div>
+              <div class="menu-item-price">£16</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Eggs Benedict</div>
+                <div class="menu-item-desc">Poached eggs, Wiltshire ham, hollandaise, sourdough muffin</div>
+              </div>
+              <div class="menu-item-price">£13</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Avocado on Sourdough</div>
+                <div class="menu-item-desc">Smashed avocado, poached egg, chilli flakes, micro herbs (V)</div>
+              </div>
+              <div class="menu-item-price">£12</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="garden-sunday" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Sunday Starters</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Prawn Cocktail</div>
+                <div class="menu-item-desc">Cornish prawns, Marie Rose sauce, iceberg, sourdough</div>
+              </div>
+              <div class="menu-item-price">£11</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Soup of the Day</div>
+                <div class="menu-item-desc">Ask your server for today's creation, crusty bread</div>
+              </div>
+              <div class="menu-item-price">£8</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">The Sunday Roast</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Roast Sirloin of Beef</div>
+                <div class="menu-item-desc">Yorkshire pudding, roast potatoes, seasonal vegetables, horseradish, red wine gravy</div>
+              </div>
+              <div class="menu-item-price">£26</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Roast Loin of Pork</div>
+                <div class="menu-item-desc">Crackling, apple sauce, roast potatoes, seasonal greens, cider gravy</div>
+              </div>
+              <div class="menu-item-price">£24</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Nut Roast (V)</div>
+                <div class="menu-item-desc">Wild mushroom, chestnut, herb stuffing, roast potatoes, vegetable gravy</div>
+              </div>
+              <div class="menu-item-price">£20</div>
+            </div>
+          </div>
+        </div>
+        <div class="menu-note">Sunday Roast served 12pm–4pm. Booking recommended.</div>
+      </div>
+    </div>
+  </section>
+  <div class="newsletter fade-up">
+    <div class="container">
+      <div class="newsletter-title">Reserve Your Table</div>
+      <div class="newsletter-sub">Call +44 (0)1736 363117 or email reservations@hotelpenzance.com</div>
+      <div style="margin-top:24px"><button class="btn-primary" style="background:var(--deep-navy);color:var(--gold)">Make a Reservation</button></div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;flex-wrap:wrap;gap:16px">
+        <div class="footer-logo-main" style="font-size:22px">Hotel Penzance</div>
+        <div style="display:flex;gap:32px">
+          <span onclick="showPage('home')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);cursor:pointer">Home</span>
+          <span onclick="showPage('beach-kitchen')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Beach Kitchen</span>
+          <span onclick="showPage('surf-club')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Surf Club</span>
+          <span onclick="showPage('ministry-flavour')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Ministry of Flavour</span>
+        </div>
+        <div class="footer-copy">© 2026 Hotel Penzance Collection</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= BEACH KITCHEN PAGE ================= -->
+<div class="page" id="page-beach-kitchen">
+  <section class="restaurant-hero">
+    <div class="restaurant-hero-bg" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/353/q1weohtnnx.webp') center/cover no-repeat"></div>
+    <div class="restaurant-hero-overlay"></div>
+    <div class="restaurant-hero-content">
+      <div class="restaurant-hero-tag">Hotel Penzance Promenade</div>
+      <h1 class="restaurant-hero-title">The Beach<br><em>Kitchen</em></h1>
+      <div style="margin-top:28px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary">Reserve a Table</button>
+        <button class="btn-outline" onclick="document.getElementById('beach-menu').scrollIntoView({behavior:'smooth'})">View Menu</button>
+      </div>
+    </div>
+  </section>
+  <div class="back-nav">
+    <a onclick="showPage('home')">← Home</a>
+    <span class="sep">◆</span>
+    <a>Restaurants</a>
+    <span class="sep">◆</span>
+    <a>The Beach Kitchen</a>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="section-header fade-up" style="text-align:left;max-width:600px">
+        <div class="section-eyebrow">Promenade Dining</div>
+        <h2 class="section-title">Casual Coastal<br><em>at Its Finest</em></h2>
+        <p class="section-desc" style="text-align:left;margin:20px 0 0">Fresh seafood, vibrant salads, and classics served with soaring views over Mount's Bay. All-day dining, handcrafted cocktails, and the best sunsets in Penzance.</p>
+      </div>
+      <div class="dining-features fade-up" style="margin-top:56px">
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🌊</div>
+          <div class="dining-feature-title">Beachside Location</div>
+          <div class="dining-feature-desc">Steps from the promenade with sweeping views of the bay.</div>
+        </div>
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🍹</div>
+          <div class="dining-feature-title">Craft Cocktail Bar</div>
+          <div class="dining-feature-desc">Creative cocktails, local gins, Cornish ales, and fine wines.</div>
+        </div>
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🐟</div>
+          <div class="dining-feature-title">Fresh-Landed Fish</div>
+          <div class="dining-feature-desc">Direct from Newlyn Fish Market — Cornwall's freshest catch daily.</div>
+        </div>
+      </div>
+      <div id="beach-menu" class="restaurant-tabs">
+        <div class="restaurant-tab active" onclick="switchTab('beach','all-day')">All Day</div>
+        <div class="restaurant-tab" onclick="switchTab('beach','cocktails')">Cocktails & Bar</div>
+      </div>
+      <div id="beach-all-day" class="tab-content active">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Small Plates</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Tempura Prawns</div>
+                <div class="menu-item-desc">Newlyn prawns, light tempura batter, sweet chilli dip, lime</div>
+              </div>
+              <div class="menu-item-price">£11</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Fish Tacos</div>
+                <div class="menu-item-desc">Beer-battered haddock, slaw, chipotle mayo, pickled jalapeños</div>
+              </div>
+              <div class="menu-item-price">£13</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Cornish Mussels</div>
+                <div class="menu-item-desc">Steamed in white wine, shallots, cream, crusty bread</div>
+              </div>
+              <div class="menu-item-price">£14</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Calamari Fritti</div>
+                <div class="menu-item-desc">Crispy squid rings, aioli, lemon, fresh herbs</div>
+              </div>
+              <div class="menu-item-price">£10</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Mains & Classics</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Fish & Chips</div>
+                <div class="menu-item-desc">Beer-battered Newlyn haddock, triple-cooked chips, mushy peas, tartare sauce</div>
+              </div>
+              <div class="menu-item-price">£18</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Grilled Catch of the Day</div>
+                <div class="menu-item-desc">Ask your server — served with seasonal vegetables & new potatoes</div>
+              </div>
+              <div class="menu-item-price">MKT</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Beach Burger</div>
+                <div class="menu-item-desc">Cornish beef patty, smoked cheddar, burger sauce, brioche bun, fries</div>
+              </div>
+              <div class="menu-item-price">£16</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Superfood Bowl</div>
+                <div class="menu-item-desc">Quinoa, roasted sweet potato, kale, avocado, tahini dressing (VE)</div>
+              </div>
+              <div class="menu-item-price">£15</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="beach-cocktails" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Signature Cocktails</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Penzance Sunset</div>
+                <div class="menu-item-desc">Cornish gin, elderflower, passionfruit, prosecco, edible gold</div>
+              </div>
+              <div class="menu-item-price">£12</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Atlantic Breeze</div>
+                <div class="menu-item-desc">Vodka, blue curaçao, lime, ginger beer, sea salt rim</div>
+              </div>
+              <div class="menu-item-price">£11</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Mount's Bay Negroni</div>
+                <div class="menu-item-desc">Cornish gin, Campari, sweet vermouth, orange twist</div>
+              </div>
+              <div class="menu-item-price">£12</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Wines & Beers</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Camel Valley Brut</div>
+                <div class="menu-item-desc">Cornish sparkling wine, crisp and elegant</div>
+              </div>
+              <div class="menu-item-price">£14/gls</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Skinner's Betty Stogs</div>
+                <div class="menu-item-desc">Classic Cornish ale, malty finish</div>
+              </div>
+              <div class="menu-item-price">£5.50</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">House White / Red</div>
+                <div class="menu-item-desc">Curated house wines by the glass</div>
+              </div>
+              <div class="menu-item-price">£8/gls</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="newsletter fade-up">
+    <div class="container">
+      <div class="newsletter-title">Reserve Your Table</div>
+      <div class="newsletter-sub">Call +44 (0)1736 363117 or walk-ins welcome</div>
+      <div style="margin-top:24px"><button class="btn-primary" style="background:var(--deep-navy);color:var(--gold)">Book a Table</button></div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;flex-wrap:wrap;gap:16px">
+        <div class="footer-logo-main" style="font-size:22px">Hotel Penzance</div>
+        <div style="display:flex;gap:32px;flex-wrap:wrap">
+          <span onclick="showPage('home')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);cursor:pointer">Home</span>
+          <span onclick="showPage('garden-restaurant')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Garden Restaurant</span>
+          <span onclick="showPage('surf-club')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Surf Club</span>
+          <span onclick="showPage('ministry-flavour')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Ministry of Flavour</span>
+        </div>
+        <div class="footer-copy">© 2026 Hotel Penzance Collection</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= SURF CLUB PAGE ================= -->
+<div class="page" id="page-surf-club">
+  <section class="restaurant-hero">
+    <div class="restaurant-hero-bg" style="background:url('https://dk2r6yr6ocwr8.cloudfront.net/media/hotel-penzance-cloned/storage/uploads/variants/323/1exlg7ron6.webp') center/cover no-repeat"></div>
+    <div class="restaurant-hero-overlay" style="background:linear-gradient(to bottom,rgba(42,122,138,0.4),rgba(13,26,53,0.8))"></div>
+    <div class="restaurant-hero-content">
+      <div class="restaurant-hero-tag">Marazion Beach</div>
+      <h1 class="restaurant-hero-title">The Surf Club<br><em>Restaurant</em></h1>
+      <div style="margin-top:28px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary">Book a Table</button>
+        <button class="btn-outline" onclick="document.getElementById('surf-menu').scrollIntoView({behavior:'smooth'})">See the Menu</button>
+      </div>
+    </div>
+  </section>
+  <div class="back-nav">
+    <a onclick="showPage('home')">← Home</a>
+    <span class="sep">◆</span>
+    <a>Restaurants</a>
+    <span class="sep">◆</span>
+    <a>The Surf Club</a>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="dining-features fade-up">
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🏄</div>
+          <div class="dining-feature-title">Marazion Views</div>
+          <div class="dining-feature-desc">Perched above Marazion Beach with iconic St Michael's Mount views.</div>
+        </div>
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🍕</div>
+          <div class="dining-feature-title">Wood-Fired Classics</div>
+          <div class="dining-feature-desc">Stone-baked pizzas with Cornish toppings, fired to perfection.</div>
+        </div>
+        <div class="dining-feature">
+          <div class="dining-feature-icon">🌅</div>
+          <div class="dining-feature-title">Best Sundowners</div>
+          <div class="dining-feature-desc">Watch the sun set over the Atlantic from our terrace with a cocktail in hand.</div>
+        </div>
+      </div>
+      <div id="surf-menu" class="restaurant-tabs">
+        <div class="restaurant-tab active" onclick="switchTab('surf','mains')">Food Menu</div>
+        <div class="restaurant-tab" onclick="switchTab('surf','pizza')">Wood-Fired Pizzas</div>
+        <div class="restaurant-tab" onclick="switchTab('surf','drinks')">Drinks</div>
+      </div>
+      <div id="surf-mains" class="tab-content active">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Starters & Snacks</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Crab on Toast</div>
+                <div class="menu-item-desc">Freshly picked Cornish crab, sourdough toast, samphire, lemon</div>
+              </div>
+              <div class="menu-item-price">£13</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Halloumi Fries</div>
+                <div class="menu-item-desc">Golden halloumi, chilli jam, lime yoghurt dip (V)</div>
+              </div>
+              <div class="menu-item-price">£9</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Smoked Mackerel Salad</div>
+                <div class="menu-item-desc">Hot-smoked Newlyn mackerel, new potato, pickled beet, horseradish cream</div>
+              </div>
+              <div class="menu-item-price">£12</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Mains</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Grilled Swordfish Steak</div>
+                <div class="menu-item-desc">Atlantic swordfish, charred corn salsa, avocado, smoked paprika butter</div>
+              </div>
+              <div class="menu-item-price">£26</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Surf & Turf</div>
+                <div class="menu-item-desc">Cornish sirloin, butter-poached lobster tail, triple chips, bearnaise sauce</div>
+              </div>
+              <div class="menu-item-price">£48</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Vegan Buddha Bowl</div>
+                <div class="menu-item-desc">Spiced chickpeas, roasted vegetables, green tahini, pomegranate (VE)</div>
+              </div>
+              <div class="menu-item-price">£16</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="surf-pizza" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Wood-Fired Pizzas</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Frutti di Mare</div>
+                <div class="menu-item-desc">Cornish seafood medley, tomato, mozzarella, garlic oil, parsley</div>
+              </div>
+              <div class="menu-item-price">£18</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Prosciutto e Rucola</div>
+                <div class="menu-item-desc">Parma ham, rocket, shaved parmesan, truffle oil, fig jam</div>
+              </div>
+              <div class="menu-item-price">£17</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Smoky BBQ Chicken</div>
+                <div class="menu-item-desc">Free-range chicken, smoked BBQ base, red onion, jalapeños, cheddar</div>
+              </div>
+              <div class="menu-item-price">£16</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Vegetarian & Vegan Pizzas</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Roasted Vegetable (V)</div>
+                <div class="menu-item-desc">Courgette, peppers, aubergine, feta, fresh basil, chilli oil</div>
+              </div>
+              <div class="menu-item-price">£15</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Vegan Margherita (VE)</div>
+                <div class="menu-item-desc">San Marzano tomato, vegan mozzarella, fresh basil, olive oil</div>
+              </div>
+              <div class="menu-item-price">£14</div>
+            </div>
+            <div class="menu-note" style="margin-top:0">All pizzas made with 48-hour fermented dough. Gluten-free bases available +£2.</div>
+          </div>
+        </div>
+      </div>
+      <div id="surf-drinks" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Signature Serves</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">St Michael's Mule</div>
+                <div class="menu-item-desc">Cornish vodka, ginger beer, lime, cucumber, mint</div>
+              </div>
+              <div class="menu-item-price">£10</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">The Surfer's Spritz</div>
+                <div class="menu-item-desc">Camel Valley sparkling, elderflower, cucumber, sea herb garnish</div>
+              </div>
+              <div class="menu-item-price">£11</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Cornish Spirits</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Curio Rhubarb Gin</div>
+                <div class="menu-item-desc">Cornish craft gin, tonic, rhubarb, dried rose petal</div>
+              </div>
+              <div class="menu-item-price">£9</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Porthlevens Rum Punch</div>
+                <div class="menu-item-desc">Dark rum, passionfruit, pineapple, lime, Cornish sea salt</div>
+              </div>
+              <div class="menu-item-price">£11</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="newsletter fade-up">
+    <div class="container">
+      <div class="newsletter-title">Book The Surf Club</div>
+      <div class="newsletter-sub">Marazion Beach · Open daily from noon</div>
+      <div style="margin-top:24px"><button class="btn-primary" style="background:var(--deep-navy);color:var(--gold)">Reserve a Table</button></div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;flex-wrap:wrap;gap:16px">
+        <div class="footer-logo-main" style="font-size:22px">Hotel Penzance</div>
+        <div style="display:flex;gap:32px;flex-wrap:wrap">
+          <span onclick="showPage('home')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);cursor:pointer">Home</span>
+          <span onclick="showPage('garden-restaurant')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Garden Restaurant</span>
+          <span onclick="showPage('beach-kitchen')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Beach Kitchen</span>
+          <span onclick="showPage('ministry-flavour')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Ministry of Flavour</span>
+        </div>
+        <div class="footer-copy">© 2026 Hotel Penzance Collection</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ================= MINISTRY OF FLAVOUR PAGE ================= -->
+<div class="page" id="page-ministry-flavour">
+  <section class="restaurant-hero" style="height:65vh">
+    <div class="restaurant-hero-bg" style="background:linear-gradient(135deg,#1a0a2e,#2d1044,#8b1a1a,#c0392b);"></div>
+    <div class="restaurant-hero-overlay" style="background:rgba(0,0,0,0.4)"></div>
+    <div style="position:absolute;inset:0;background-image:radial-gradient(circle at 30% 50%, rgba(255,140,0,0.15) 0%,transparent 50%), radial-gradient(circle at 70% 60%, rgba(180,20,20,0.1) 0%,transparent 40%);"></div>
+    <div class="restaurant-hero-content" style="position:relative;z-index:2">
+      <div class="restaurant-hero-tag">Penzance Town Centre</div>
+      <h1 class="restaurant-hero-title">Ministry<br><em>of Flavour</em></h1>
+      <p style="font-size:13px;letter-spacing:3px;color:rgba(255,255,255,0.7);margin-bottom:28px;font-style:italic">The Best Curry in Cornwall</p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
+        <button class="btn-primary" style="background:#e67e22">Book a Table</button>
+        <button class="btn-outline" onclick="document.getElementById('mof-menu').scrollIntoView({behavior:'smooth'})">Explore Menu</button>
+      </div>
+    </div>
+  </section>
+  <div class="back-nav">
+    <a onclick="showPage('home')">← Home</a>
+    <span class="sep">◆</span>
+    <a>Restaurants</a>
+    <span class="sep">◆</span>
+    <a>Ministry of Flavour</a>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="dining-features fade-up">
+        <div class="dining-feature" style="border-bottom-color:#e67e22">
+          <div class="dining-feature-icon">🌶️</div>
+          <div class="dining-feature-title">Bold Spice</div>
+          <div class="dining-feature-desc">Authentic Indian recipes, bold spices, and vibrant flavours crafted with passion.</div>
+        </div>
+        <div class="dining-feature" style="border-bottom-color:#e67e22">
+          <div class="dining-feature-icon">🏆</div>
+          <div class="dining-feature-title">Award Winning</div>
+          <div class="dining-feature-desc">Voted the best curry in Penzance — a local institution beloved by residents and visitors alike.</div>
+        </div>
+        <div class="dining-feature" style="border-bottom-color:#e67e22">
+          <div class="dining-feature-icon">🥡</div>
+          <div class="dining-feature-title">Takeaway Available</div>
+          <div class="dining-feature-desc">Enjoy the magic of Ministry of Flavour in the comfort of your hotel room.</div>
+        </div>
+      </div>
+      <div id="mof-menu" class="restaurant-tabs">
+        <div class="restaurant-tab active" onclick="switchTab('mof','mains-mof')">Curries & Mains</div>
+        <div class="restaurant-tab" onclick="switchTab('mof','starters-mof')">Starters</div>
+        <div class="restaurant-tab" onclick="switchTab('mof','sides-mof')">Sides & Breads</div>
+      </div>
+      <div id="mof-mains-mof" class="tab-content active">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Signature Curries</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Lamb Rogan Josh</div>
+                <div class="menu-item-desc">Slow-cooked Cornish lamb, Kashmiri spices, aromatic gravy, fresh coriander</div>
+              </div>
+              <div class="menu-item-price">£18</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Butter Chicken</div>
+                <div class="menu-item-desc">Free-range chicken, tomato-cream sauce, fenugreek, garam masala</div>
+              </div>
+              <div class="menu-item-price">£16</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">King Prawn Masala</div>
+                <div class="menu-item-desc">Atlantic king prawns, rich tomato masala, coconut milk, curry leaf</div>
+              </div>
+              <div class="menu-item-price">£22</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Lamb Biryani</div>
+                <div class="menu-item-desc">Basmati rice, slow-cooked lamb, saffron, fried onion, raita</div>
+              </div>
+              <div class="menu-item-price">£20</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Vegetarian & Vegan</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Saag Paneer (V)</div>
+                <div class="menu-item-desc">Fresh spinach, house-made paneer, ginger, garlic, light spices</div>
+              </div>
+              <div class="menu-item-price">£14</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Chana Masala (VE)</div>
+                <div class="menu-item-desc">Spiced chickpeas, tomato, onion, cumin-coriander base</div>
+              </div>
+              <div class="menu-item-price">£13</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Dal Makhani (VE)</div>
+                <div class="menu-item-desc">Black lentils, kidney beans, slow-cooked overnight, smoky finish</div>
+              </div>
+              <div class="menu-item-price">£13</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Vegetable Jalfrezi (VE)</div>
+                <div class="menu-item-desc">Stir-fried seasonal vegetables, bold spice, peppers, green chilli</div>
+              </div>
+              <div class="menu-item-price">£14</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="mof-starters-mof" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Street Food Starters</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Chicken Tikka</div>
+                <div class="menu-item-desc">Tandoori-spiced chicken breast, mint chutney, onion salad</div>
+              </div>
+              <div class="menu-item-price">£10</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Lamb Seekh Kebab</div>
+                <div class="menu-item-desc">Spiced minced lamb skewer, tamarind dip, shredded cabbage</div>
+              </div>
+              <div class="menu-item-price">£11</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Vegetarian Starters</div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Samosa Chaat (V)</div>
+                <div class="menu-item-desc">Crispy pastry parcels, spiced potato, tangy chutneys, yoghurt</div>
+              </div>
+              <div class="menu-item-price">£8</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info">
+                <div class="menu-item-name">Onion Bhaji (VE)</div>
+                <div class="menu-item-desc">Crispy spiced onion fritters, green chutney</div>
+              </div>
+              <div class="menu-item-price">£7</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="mof-sides-mof" class="tab-content">
+        <div class="menu-grid fade-up">
+          <div>
+            <div class="menu-category-title">Breads</div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Plain Naan</div></div>
+              <div class="menu-item-price">£3.50</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Garlic & Coriander Naan</div></div>
+              <div class="menu-item-price">£4</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Peshwari Naan</div></div>
+              <div class="menu-item-price">£4.50</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Paratha</div></div>
+              <div class="menu-item-price">£4</div>
+            </div>
+          </div>
+          <div>
+            <div class="menu-category-title">Accompaniments</div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Basmati Rice</div></div>
+              <div class="menu-item-price">£3.50</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Saffron Rice</div></div>
+              <div class="menu-item-price">£4</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Mango Chutney</div></div>
+              <div class="menu-item-price">£2</div>
+            </div>
+            <div class="menu-item">
+              <div class="menu-item-info"><div class="menu-item-name">Cucumber Raita</div></div>
+              <div class="menu-item-price">£2.50</div>
+            </div>
+          </div>
+        </div>
+        <div class="menu-note">Spice levels: Mild · Medium · Hot · Very Hot · Chef's Challenge 🔥  Takeaway available — call ahead to order.</div>
+      </div>
+    </div>
+  </section>
+  <div class="newsletter fade-up" style="background:linear-gradient(135deg,#8b1a1a,#c0392b,#e67e22)">
+    <div class="container">
+      <div class="newsletter-title">Experience Bold Flavour</div>
+      <div class="newsletter-sub">Penzance Town Centre · Dinner nightly from 5:30pm</div>
+      <div style="margin-top:24px"><button class="btn-primary" style="background:var(--deep-navy);color:#e67e22">Book a Table</button></div>
+    </div>
+  </div>
+  <footer>
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 0;flex-wrap:wrap;gap:16px">
+        <div class="footer-logo-main" style="font-size:22px">Hotel Penzance</div>
+        <div style="display:flex;gap:32px;flex-wrap:wrap">
+          <span onclick="showPage('home')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);cursor:pointer">Home</span>
+          <span onclick="showPage('garden-restaurant')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Garden Restaurant</span>
+          <span onclick="showPage('beach-kitchen')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Beach Kitchen</span>
+          <span onclick="showPage('surf-club')" style="font-size:10px;letter-spacing:3px;text-transform:uppercase;color:rgba(255,255,255,0.5);cursor:pointer">Surf Club</span>
+        </div>
+        <div class="footer-copy">© 2026 Hotel Penzance Collection</div>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<script>
+// ===== LOADING SCREEN =====
+window.addEventListener('load', () => {
+  const bar = document.getElementById('loadingBar');
+  bar.style.width = '100%';
+  setTimeout(() => {
+    document.getElementById('loadingScreen').classList.add('done');
+  }, 1600);
+});
+
+// ===== CUSTOM CURSOR =====
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+let mouseX = 0, mouseY = 0;
+let ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', (e) => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  cursor.style.left = mouseX + 'px';
+  cursor.style.top = mouseY + 'px';
+});
+
+function animateRing() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  ring.style.left = ringX + 'px';
+  ring.style.top = ringY + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+
+document.querySelectorAll('a, button, .hotel-card, .restaurant-card, .explore-card, .gallery-item, [onclick], .nav-links span, .footer-links span').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.classList.add('hovered'); ring.classList.add('hovered'); });
+  el.addEventListener('mouseleave', () => { cursor.classList.remove('hovered'); ring.classList.remove('hovered'); });
+});
+
+// ===== NAVBAR SCROLL =====
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 80);
+});
+
+// ===== PAGE NAVIGATION =====
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Re-trigger animations
+  setTimeout(initAnimations, 100);
+}
+
+// ===== TABS =====
+function switchTab(prefix, tabId) {
+  const container = document.getElementById('page-' + currentPage());
+  container.querySelectorAll('.restaurant-tab').forEach(t => t.classList.remove('active'));
+  container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  
+  // Find and activate the tab
+  const allTabs = container.querySelectorAll('.restaurant-tab');
+  const allContents = container.querySelectorAll('.tab-content');
+  
+  event.target.classList.add('active');
+  const target = document.getElementById(prefix + '-' + tabId);
+  if (target) target.classList.add('active');
+}
+
+function currentPage() {
+  return document.querySelector('.page.active').id.replace('page-', '');
+}
+
+// ===== TESTIMONIALS =====
+const testimonials = [
+  { text: "The views were simply extraordinary. Waking up to Mount's Bay was a daily gift. The staff went above and beyond — it truly felt like a home away from home.", author: "Sarah M. · TripAdvisor" },
+  { text: "The Garden Restaurant exceeded every expectation. Local ingredients, beautifully prepared — we dined here every night and didn't once feel we were missing out.", author: "James & Claire H. · Google Reviews" },
+  { text: "Penzance has always been magical, but Hotel Penzance Promenade takes it to another level. The rooms, the views, the breakfast — absolutely outstanding.", author: "Rebecca T. · TripAdvisor" }
+];
+let currentTestimonial = 0;
+
+function showTestimonial(n) {
+  currentTestimonial = n;
+  const t = testimonials[n];
+  document.getElementById('testimonialCards').innerHTML = `
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <p class="testimonial-quote">${t.text}</p>
+      <div class="testimonial-author">— ${t.author}</div>
+    </div>`;
+  document.querySelectorAll('.testimonial-dot').forEach((d, i) => d.classList.toggle('active', i === n));
+}
+
+setInterval(() => {
+  showTestimonial((currentTestimonial + 1) % testimonials.length);
+}, 5000);
+
+// ===== SCROLL ANIMATIONS =====
+function initAnimations() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => {
+    el.classList.remove('visible');
+    observer.observe(el);
+  });
+}
+initAnimations();
+
+// ===== PARALLAX HERO =====
+window.addEventListener('scroll', () => {
+  const hero = document.querySelector('.page.active .hero-img');
+  if (hero) {
+    const scroll = window.scrollY;
+    hero.style.transform = `translateY(${scroll * 0.3}px)`;
+  }
+});
+</script>
+</body>
+</html>
